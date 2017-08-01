@@ -5,7 +5,7 @@ import java.util.Map;
 public class SQL {
 	private String User = "root";//数据库用户名
 	private String Password = "sherlock";//数据库密码
-	private String url = "jdbc:mysql://localhost:3306/steam?useUnicode=true&characterEncoding=UTF-8";//数据库加载
+//	private String url = "jdbc:mysql://localhost:3306/steam?useUnicode=true&characterEncoding=UTF-8";//数据库加载
 	private Connection con = null;//建立连接
 	private Statement sta = null;//数据库操作
 	private ResultSet rs = null;//查找操作

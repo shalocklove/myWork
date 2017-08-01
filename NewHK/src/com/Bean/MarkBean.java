@@ -88,7 +88,7 @@ public class MarkBean {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		
 		try {
-			this.date = sdf.parse(date.substring(30, 41));
+			this.date = sdf.parse(date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

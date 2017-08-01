@@ -18,26 +18,28 @@ public class SparitUrlDAO implements Runnable {
 	private String url = "";
 	private String FILE_NO;
 	private String key;
-	private URLBean Url;
-	List<URLBean> urls = new ArrayList<URLBean>();
+	private String Url;
+	public static List<String> urls = new ArrayList<String>();
+	//获取第二层url
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		if(url != ""){
 			try {
-				String s = sparit.sendGet(sparit.Connection(url));
-				String patternOocd = "KEY[\\S]*\" target=\"body\">";
+				String s = "";
+				s = sparit.sendGet(sparit.Connection(url));
+				System.out.println(url);
+				String patternOocd = "ereg_main_schi.jsp?[\\S]{0,200}\"";
 				Pattern r = Pattern.compile(patternOocd);
 				Matcher m = r.matcher(s);
 				List<String> str = new ArrayList<String>();
+				
 				for(int i = 0; m.find(); i++){
-					str.add(m.group());
+					str.add(m.group().substring(19, m.group().length()-1));
+					System.out.println("a : "+m.group().substring(19, m.group().length()-1));
 				}
+				
 				for (String string2 : str) {
-					System.out.println("aaaaa:"+string2);
-					setFILE_NO(string2.split("&")[1].substring(8));
-					setKey(string2.substring(4, 13));
-					Url = new URLBean(key, FILE_NO);
+					Url = "http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?" + string2;
 					synchronized(urls){
 						urls.add(Url);
 					}
@@ -45,9 +47,11 @@ public class SparitUrlDAO implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println(url);
 			}
-			url = "";
-		}
+			
+			
+		
 	}
 	public void setUrl(String url){
 		this.url = url;
@@ -61,4 +65,13 @@ public class SparitUrlDAO implements Runnable {
 	public SparitUrlDAO (String url){
 		setUrl(url);
 	}
+	public List<String> getUrlList(){
+		return urls;
+	}
+	public static void removeURLBean(String url){
+		synchronized(urls){
+			urls.remove(url);
+		}
+	}
+	
 }

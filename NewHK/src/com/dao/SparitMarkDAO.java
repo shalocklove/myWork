@@ -1,56 +1,72 @@
+package com.dao;
+
 import java.io.IOException;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.Bean.MarkBean;
-import com.dao.MarkDAO;
 import com.util.Sparit;
 
-public class Demos {
-
-	public static void main(String[] args) throws IOException {
+public class SparitMarkDAO implements Runnable {
+	private Pattern r = null;
+	private Matcher m = null;
+	private Sparit sparit = new Sparit();
+	private MarkBean mark = new MarkBean();
+	private String url = "";
+	public static List<MarkBean> list = new ArrayList<MarkBean>();
+	
+	@Override
+	public void run() {
 		// TODO Auto-generated method stub
-		Pattern r = null;
-		Matcher m = null;
-		Sparit sparit = new Sparit();
-		MarkBean mark = new MarkBean();
-		URLConnection conn = sparit.Connection("http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?SAVED_CRI=&FROM_SEARCH_RESULT=0&ITEM_KEY=102405376&FILE_NO=19903148&FILE_NO_TYPE=TM_APPL&SOAPQC=0");
-		String result = sparit.sendGet(conn);
+		URLConnection conn = null;
+		try {
+			conn = sparit.Connection(url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String result = "";
+		try {
+			result = sparit.sendGet(conn);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("download" + url);
 		String[] s = new String[8];
 		s[0] = "<td width=\"460\">[0-9]{0,8}";
 		s[1] = "<b>状况：<br>Status:</b></td>[\\s]*<td>[\\s\\S]{0,25}</td>";
 		s[2] = "<IMG src=\"[\\S]*\" border=\"0\" alt=\"image\">";
 		s[3] = "<td nowrap><b>商标种类：<br>Mark Type:</b></td>[\\s]*<td>[\\s]*[\\S]*<br>";
-		s[4] = "D-M-Y\\)</b></td>[\\s]*<td>[\\S]{10}[\\s]*</td>";
+		s[4] = "[0-9]{2}-[0-9]{2}-[0-9]{4}";
 		s[5] = "姓名／名称、地址：<br>[\\s\\S]*Address:[\\s\\S]{0,500}<td>&nbsp;</td>";
 		s[6] = "for Service:</b></td>[\\s\\S]{0,350}<td>&nbsp;</td>";
 		s[7] = "<a href=\"javascript:;\" onClick=\"location.replace\\('#class_no[0-9]{0,3}";
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("application", s[0]);//
-		map.put("status", s[1]);//
-		map.put("mark", s[2]);//
+		map.put("application", s[0]);
+		map.put("status", s[1]);
+		map.put("mark", s[2]);
 		map.put("type", s[3]);
-		map.put("date", s[4]);//
-		map.put("nameAddress", s[5]);//
-		map.put("service", s[6]);//
-		map.put("classNO", s[7]);//
-		
+		map.put("date", s[4]);
+		map.put("nameAddress", s[5]);
+		map.put("service", s[6]);
+		map.put("classNO", s[7]);
 		Map<String, String> mmap = new HashMap<>();
 		for (Map.Entry<String, String> ma : map.entrySet()) {
 			r = Pattern.compile(ma.getValue());
 			m = r.matcher(result);
 			if(m.find()){
-//				System.out.println(ma.getKey() + " : " +m.group());	
-//				System.out.println();
 				mmap.put(ma.getKey(), m.group());
 			}
 		}
+		
 		mark.setApplication(mmap.get("application"));
-//		System.out.println(mmap.get("classNO"));
 		mark.setClassNO(mmap.get("classNO"));
 		mark.setDate(mmap.get("date"));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -60,12 +76,19 @@ public class Demos {
 		mark.setStatus(mmap.get("status"));
 		mark.setType(mmap.get("type"));
 		MarkDAO markd = new MarkDAO(mark);
-//		markd.insert(mark);
 		MarkDAO markDao = new MarkDAO(mark);
 		markDao.setMark(mark);
 		markDao.run();
 		
-		
 	}
-
+	public static void remove(MarkBean mark){
+		list.remove(mark);
+	}
+	public SparitMarkDAO(String url) {
+		// TODO Auto-generated constructor stub
+		this.url = url;
+	}
+	public MarkBean getMark(){
+		return mark;
+	}
 }
