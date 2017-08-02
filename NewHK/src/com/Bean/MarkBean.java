@@ -23,7 +23,7 @@ public class MarkBean {
 		return application;
 	}
 	public void setApplication(String application) {
-		this.application = application.substring(16);
+		this.application = application.substring(16, application.length()-2);
 	}
 	public String getStatus() {
 		return status;
@@ -94,6 +94,5 @@ public class MarkBean {
 			e.printStackTrace();
 		}
 	}
-	
 	
 }
