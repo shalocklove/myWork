@@ -40,7 +40,7 @@ public class SparitMarkDAO implements Runnable {
 		}
 		System.out.println("download" + url);
 		String[] s = new String[8];
-		s[0] = "<td width=\"460\">[0-9]{0,8}";
+		s[0] = "<td width=\"460\">[\\S]{0,13}<";
 		s[1] = "<b>状况：<br>Status:</b></td>[\\s]*<td>[\\s\\S]{0,25}</td>";
 		s[2] = "<IMG src=\"[\\S]*\" border=\"0\" alt=\"image\">";
 		s[3] = "<td nowrap><b>商标种类：<br>Mark Type:</b></td>[\\s]*<td>[\\s]*[\\S]*<br>";
@@ -66,7 +66,7 @@ public class SparitMarkDAO implements Runnable {
 			}
 		}
 		
-		mark.setApplication(mmap.get("application"));
+		mark.setApplication(mmap.get("application")+" ");
 		mark.setClassNO(mmap.get("classNO"));
 		mark.setDate(mmap.get("date"));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

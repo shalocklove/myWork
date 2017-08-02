@@ -26,8 +26,9 @@ public class SparitUrlDAO implements Runnable {
 		// TODO Auto-generated method stub
 			try {
 				String s = "";
-				s = sparit.sendGet(sparit.Connection(url));
 				System.out.println(url);
+				s = sparit.sendGet(sparit.Connection(url));
+				
 				String patternOocd = "ereg_main_schi.jsp?[\\S]{0,200}\"";
 				Pattern r = Pattern.compile(patternOocd);
 				Matcher m = r.matcher(s);
