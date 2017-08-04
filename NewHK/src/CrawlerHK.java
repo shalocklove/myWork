@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -6,8 +7,8 @@ import com.dao.SparitMarkDAO;
 import com.dao.SparitUrlDAO;
 import com.dao.addUrlDAO;
 
-public class CrawlerHK {//23        from 19280000 to 19307900  time out 2 times in 06.1 take 61 data  140000
-	 
+public class CrawlerHK {
+	
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 		addUrlDAO  addURL = new addUrlDAO();
@@ -25,7 +26,7 @@ public class CrawlerHK {//23        from 19280000 to 19307900  time out 2 times 
 		threadAddUrl.start();
 		Thread.currentThread().sleep(200);
 		while(bf){
-			if(addURL.getList().size() > 0){//63
+			if(addURL.getList().size() > 0){
 				synchronized(addURL){
 					urlFirst = addURL.getList().get(0);
 					addURL.removeList(urlFirst);
@@ -41,20 +42,21 @@ public class CrawlerHK {//23        from 19280000 to 19307900  time out 2 times 
 					System.out.println("     :"+urlSecend);
 					executorSecound.execute(new SparitMarkDAO(urlSecend));
 				}
-			}//else bf = false;
+			}else bf = false;
 		}
-//		bf = true;
-//		while(bf){
+		bf = true;
+		System.out.println("get");
+		while(bf){
 //			Thread.currentThread().sleep(200);
-//			if(SparitUrlDAO.urls.size() > 0){
-//				synchronized(SparitUrlDAO.urls.get(0)){
-//					urlSecend = SparitUrlDAO.urls.get(0);
-//					SparitUrlDAO.removeURLBean(urlSecend);
-//				}
-//				System.out.println("     :"+urlSecend);
-//				executorSecound.execute(new SparitMarkDAO(urlSecend));
-//			}else bf = false;
-//		}
+			if(SparitUrlDAO.urls.size() > 0){
+				synchronized(SparitUrlDAO.urls.get(0)){
+					urlSecend = SparitUrlDAO.urls.get(0);
+					SparitUrlDAO.removeURLBean(urlSecend);
+				}
+				System.out.println("     :"+urlSecend);
+				executorSecound.execute(new SparitMarkDAO(urlSecend));
+			}else bf = false;
+		}
 		executorFirst.shutdown();
 		executorSecound.shutdown();
 	}
