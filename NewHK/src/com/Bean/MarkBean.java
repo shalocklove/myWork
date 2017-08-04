@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MarkBean {
-	private String application;//申请号
+	private String markNO;//申请号
 	private String status;//状况
 	private String mark;//商标图片
 	private String type;//商标种类
@@ -19,11 +19,11 @@ public class MarkBean {
 	private String address;//申请人地址
 	private Pattern r;
 	private Matcher m;
-	public String getApplication() {
-		return application;
+	public String getMarkNO() {
+		return markNO;
 	}
-	public void setApplication(String application) {
-		this.application = application.substring(16, application.length()-2);
+	public void setMarkNO(String markNO) {
+		this.markNO = markNO.substring(16, markNO.length()-2);
 	}
 	public String getStatus() {
 		return status;
