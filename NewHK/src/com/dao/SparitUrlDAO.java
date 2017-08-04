@@ -1,23 +1,16 @@
 package com.dao;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.Bean.MarkBean;
-import com.Bean.URLBean;
-import com.util.SQL;
 import com.util.Sparit;
 
 public class SparitUrlDAO implements Runnable {
 	private Sparit sparit = new Sparit();
 	private String url = "";
-	private String FILE_NO;
-	private String key;
 	private String Url;
 	public static List<String> urls = new ArrayList<String>();
 	//获取第二层url
@@ -34,7 +27,7 @@ public class SparitUrlDAO implements Runnable {
 				Matcher m = r.matcher(s);
 				List<String> str = new ArrayList<String>();
 				
-				for(int i = 0; m.find(); i++){
+				while(m.find()){
 					str.add(m.group().substring(19, m.group().length()-1));
 					System.out.println("a : "+m.group().substring(19, m.group().length()-1));
 				}
@@ -56,12 +49,6 @@ public class SparitUrlDAO implements Runnable {
 	}
 	public void setUrl(String url){
 		this.url = url;
-	}
-	private void setKey(String s){
-		this.key = s;
-	}
-	private void setFILE_NO(String s){
-		this.FILE_NO = s;
 	}
 	public SparitUrlDAO (String url){
 		setUrl(url);

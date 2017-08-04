@@ -14,7 +14,6 @@ public class urlDAO {
 		String url = "";
 		boolean b = true;
 		addUrlDAO addUrl = new addUrlDAO();
-		long time = System.currentTimeMillis();
 		Thread daoAdd = new Thread(addUrl);
 		daoAdd.start();
 		while(b){

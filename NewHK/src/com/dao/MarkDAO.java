@@ -18,9 +18,9 @@ public class MarkDAO implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-		String sql = "insert into mark(mark, application,status,type,name,service,classNO,date)"
+		String sql = "insert into mark(mark, markNO,status,type,name,service,classNO,date)"
 				+" values ({0},{1},{2},{3},{4},{5},{6},{7})";
-		s = MessageFormat.format(sql, "'"+mark.getMark()+"'", "'"+mark.getApplication()+"'", "'"+mark.getStatus()+"'"
+		s = MessageFormat.format(sql, "'"+mark.getMark()+"'", "'"+mark.getMarkNO()+"'", "'"+mark.getStatus()+"'"
 				 ,"'"+mark.getType()+"'", "'"+mark.getName()+"'","'"+mark.getService()+"'"
 				 ,mark.getClassNO(),"'"+sdf.format(mark.getDate())+"'");
 		sta = a.addJDBC("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8", "root", "sherlock");

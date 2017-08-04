@@ -2,7 +2,6 @@ package com.dao;
 
 import java.io.IOException;
 import java.net.URLConnection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +48,7 @@ public class SparitMarkDAO implements Runnable {
 		s[6] = "for Service:</b></td>[\\s\\S]{0,350}<td>&nbsp;</td>";
 		s[7] = "<a href=\"javascript:;\" onClick=\"location.replace\\('#class_no[0-9]{0,3}";
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("application", s[0]);
+		map.put("markNO", s[0]);
 		map.put("status", s[1]);
 		map.put("mark", s[2]);
 		map.put("type", s[3]);
@@ -66,16 +65,14 @@ public class SparitMarkDAO implements Runnable {
 			}
 		}
 		
-		mark.setApplication(mmap.get("application")+" ");
+		mark.setMarkNO(mmap.get("markNO")+" ");
 		mark.setClassNO(mmap.get("classNO"));
 		mark.setDate(mmap.get("date"));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		mark.setMark(mmap.get("mark"));
 		mark.setNameAddress(mmap.get("nameAddress"));
-		mark.setService(mmap.get("service"));
+		mark.setService(mmap.get("service") + " ");
 		mark.setStatus(mmap.get("status"));
 		mark.setType(mmap.get("type"));
-		MarkDAO markd = new MarkDAO(mark);
 		MarkDAO markDao = new MarkDAO(mark);
 		markDao.setMark(mark);
 		markDao.run();

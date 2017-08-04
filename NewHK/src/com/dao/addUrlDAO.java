@@ -11,7 +11,8 @@ public class addUrlDAO implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		for(int i = 19280000; i <= 19920010; i += 20){
+//		for(int i = 19280000; i <= 19920010; i += 20){
+		for(int i = 19920000; i <= 19930010; i += 20){
 			synchronized(list){
 				list.add(MessageFormat.format(url, String.valueOf(i), String.valueOf(i + 19)));
 			}
