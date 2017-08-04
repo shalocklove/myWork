@@ -35,26 +35,29 @@ public class Sparit {
 		return sendGet(conn);
 	}
 	public String sendGet(URLConnection conn) throws IOException{
-		String result = "";
+		StringBuffer result = new StringBuffer();
+	    conn.setRequestProperty("User-Agent", "Mozilla/31.0 (compatible; MSIE 10.0; Windows NT; DigExt)");  
 		conn.connect();
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),setChar));
 		String line;
 		while((line = in.readLine()) != null){
-			result += line + "\n";
+			result.append(line + "\n");
 		}
-		return result;
+		return result.toString();
 	}
 	public String sendPost(URLConnection conn, String parameter) throws IOException{
-		String resulr = "";
+		conn.setRequestProperty("User-Agent", "Mozilla/31.0 (compatible; MSIE 10.0; Windows NT; DigExt)");  
+		conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+		StringBuffer resulr = new StringBuffer();
 		PrintWriter out = new PrintWriter(conn.getOutputStream());
 		out.println(parameter);
 		out.flush();
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         String line;
         while((line = in.readLine()) != null){
-        	resulr += line;
+        	resulr.append(line);
         }
-		return resulr;
+		return resulr.toString();
 	}
 	
 }
