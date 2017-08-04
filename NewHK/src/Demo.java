@@ -1,9 +1,11 @@
 import java.io.IOException;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,12 +74,33 @@ public class Demo {
 		map.put("matters", s[12]);
 		
 //		System.out.println(result);
-		for (Map.Entry<String, String> ma: map.entrySet()) {
+		Map<String, String> mmap = new HashMap<>();
+		for (Map.Entry<String, String> ma : map.entrySet()) {
 			r = Pattern.compile(ma.getValue());
 			m = r.matcher(result);
 			if(m.find()){
-				System.out.println(ma.getKey() + " : " + m.group());
+				mmap.put(ma.getKey(), m.group());
 			}
+		}
+		mark.setMarkNO(mmap.get("markNO")+" ");
+		mark.setClass(mmap.get("class"));
+		mark.setDate(mmap.get("date"));
+		mark.setMark(mmap.get("mark"));
+		mark.setNameAddress(mmap.get("nameAddress"));
+		mark.setService(mmap.get("service") + " ");
+		mark.setStatus(mmap.get("status"));
+		mark.setType(mmap.get("type"));
+		mark.setMarkName(mmap.get("markname"));
+//		mark.setActualdate(mmap.get("actualdate"));
+		mark.setExpirydate(mmap.get("expirydate"));
+		
+//		System.out.println("matters : " + mmap.get("matters"));
+		String[] st = mmap.get("matters").split("<td colspan=\"2\">&nbsp</td>");
+		for(int i = 1; i < st.length; i++){
+			System.out.println("V : " + st[i].split("<td>")[0].substring(st[i].split("<td>")[0].length() - 26
+					, st[i].split("<td>")[0].length() - 16));
+			String q = st[i].split("<td>")[1].split(">")[1];
+			System.out.println("S : " + q.substring(1, q.length() - 12));
 		}
 		
 	}
