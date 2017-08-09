@@ -16,14 +16,15 @@ public class MarkBean {
 	private String type;//商标种类
 	private String nameAddress;//申请人 姓名／名称、地址
 	private String service;//申请人送达地址
-	private Map<String,String> classNO = new HashMap<String, String>(); // 类别编号
+	private Map<Integer,String> classNO = new HashMap<Integer, String>(); // 类别编号
 	private Date date;//提交日期 
-	private String name;//申请人姓名  （owner）
+	private String owner;//申请人姓名  （owner）
 	private String address;//申请人地址
 	private String markName;//商标名
 	private Date actualdate;//实际日期
 	private Date expirydate;//注册届满日
-	private Map<String, String> matters = new HashMap<String, String>();
+	private Date fillingdate;//提交日
+	private Map<Date, String> matters = new HashMap<Date, String>();//事项
 	private Pattern r;
 	private Matcher m;
 	public String getMarkNO() {
@@ -58,16 +59,16 @@ public class MarkBean {
 		r = Pattern.compile("<td>[\\s\\S]*&nbsp");
 		m = r.matcher(nameAddress);
 		if(m.find()){
-			this.name = m.group().split("<br>")[0].substring(4);
+			this.owner = m.group().split("<br>")[0].substring(4);
 			r = Pattern.compile("<br>[\\s\\S]*<br>");
 			m = r.matcher(m.group());
 			if(m.find()){
-				this.address = m.group();
+				this.address = m.group().split("</td>")[0];
 			}
 		}
 	}
-	public String getName(){
-		return name;
+	public String getOwner(){
+		return owner;
 	}
 	public String getAddress(){
 		return address;
@@ -82,13 +83,13 @@ public class MarkBean {
 			this.service = m.group().substring(6);
 		}
 	}
-	public Map<String, String> getClassNO() {
+	public Map<Integer, String> getClassNO() {
 		return classNO;
 	}
 	public void setClass(String classNO) {
 		String[] z = classNO.split("<a name=\"class_no");
 		for(int i = 1; i < z.length; i++){
-			this.classNO.put(z[i].split("</u><br>")[0].substring(z[i].split("</u><br>")[0].length()-2), z[i].split("</u><br>")[1]);
+			this.classNO.put(Integer.valueOf(z[i].split("</u><br>")[0].substring(z[i].split("</u><br>")[0].length()-2)), z[i].split("</u><br>")[1].split("<br>")[0]);
 		}
 	}
 	public Date getDate() {
@@ -137,17 +138,34 @@ public class MarkBean {
 			e.printStackTrace();
 		}
 	}
-	public Map<String, String> getMatters() {
+	public Map<Date, String> getMatters() {
 		return matters;
 	}
 	public void setMatters(String matters) {
 		String[] st = matters.split("<td colspan=\"2\">&nbsp</td>");
 		for(int i = 1; i < st.length; i++){
-			String p = st[i].split("<td>")[0].substring(st[i].split("<td>")[0]);
-			System.out.println("V : " + p.length() - 26
-					, st[i].split("<td>")[0].length() - 16));
-			String q = st[i].split("<td>")[1].split(">")[1];
-			System.out.println("S : " + q.substring(1, q.length() - 12));
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Date d = null;
+			try {
+				d = sdf.parse(st[i].split("<td>")[0].substring(st[i].split("<td>")[0].length() - 26, st[i].split("<td>")[0].length() - 16));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String q = st[i].split("<td>")[1].split(">")[1];			
+			this.matters.put(d, q.substring(1, q.length() - 12));
+		}
+	}
+	public Date getFillingdate() {
+		return fillingdate;
+	}
+	public void setFillingdate(String fillingdate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			this.fillingdate = sdf.parse(fillingdate.substring(fillingdate.length() - 10));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

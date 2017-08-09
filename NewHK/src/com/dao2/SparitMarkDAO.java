@@ -1,6 +1,7 @@
-package com.dao;
+package com.dao2;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URLConnection;
@@ -22,19 +23,30 @@ public class SparitMarkDAO implements Runnable {
 	private String url = "";
 	public static List<MarkBean> list = new ArrayList<MarkBean>();
 	private Proxy proxy;
-	private InetSocketAddress addr;
+	private Agency agency;
 	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		URLConnection conn = null;
+//		InetSocketAddress addr = new InetSocketAddress("223.154.130.69", 80);  
+//        Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+		synchronized (agency.proxys) {
+			if(agency.proxys.size() <= 2)
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			proxy = agency.proxys.get(0);
+			agency.proxys.remove(proxy);
+		}
 		try {
-			addr = new InetSocketAddress("118.178.124.33",3128);  
-	        proxy = new Proxy(Proxy.Type.HTTP, addr);
-			conn = sparit.Connection(url);
-		} catch (IOException e) {
+			conn = sparit.Connection(url, proxy);
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 		String result = "";
 		try {
@@ -73,8 +85,7 @@ public class SparitMarkDAO implements Runnable {
 		map.put("expirydate", s[10]);//注册届满日
 		map.put("fillingdate", s[11]);//提交日
 		map.put("matters", s[12]);
-		
-//		System.out.println(result);
+
 		Map<String, String> mmap = new HashMap<>();
 		for (Map.Entry<String, String> ma : map.entrySet()) {
 			r = Pattern.compile(ma.getValue());
@@ -84,7 +95,13 @@ public class SparitMarkDAO implements Runnable {
 			}
 		}
 		mark.setMarkNO(mmap.get("markNO")+" ");
-		mark.setClass(mmap.get("class"));
+		System.out.println("class : " + mmap.get("class"));
+		try{
+			mark.setClass(mmap.get("class"));
+		}catch(NumberFormatException e){
+			System.out.println(mmap.get("class"));
+		}
+		
 		if(mmap.get("date") != null)
 			mark.setDate(mmap.get("date"));
 		mark.setMark(mmap.get("mark"));

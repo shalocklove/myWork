@@ -1,6 +1,10 @@
-package com.dao;
+package com.dao2;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,7 +17,10 @@ public class SparitUrlDAO implements Runnable {
 	private String url = "";
 	private String Url;
 //	public static List<String> urls = new ArrayList<String>();
-	public static List<String> urls = new ArrayList<String>();
+	public List<String> urls = new ArrayList<String>();
+	private Proxy proxy;
+	private Agency agency = new Agency();
+	private URLConnection conn;
 	//获取第二层url
 	@Override
 	public void run() {
@@ -21,8 +28,26 @@ public class SparitUrlDAO implements Runnable {
 			try {
 				String s = "";
 				System.out.println(url);
-				s = sparit.sendGet(sparit.Connection(url));
+				InetSocketAddress addr = new InetSocketAddress("203.189.169.87", 80);  
+		        Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+//				synchronized (agency.proxys) {
+//					if(agency.proxys.size() <= 3){
+//						try {
+//							Thread.sleep(500);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
+//					proxy = agency.proxys.get(0);
+//					agency.proxys.remove(proxy);
+//				}
+				System.out.println(proxy);
+			    conn = sparit.Connection(url, proxy);
+			    HttpURLConnection httpUrlConnection = (HttpURLConnection) conn;
+			    System.out.println(httpUrlConnection.getResponseCode());
 				
+				s = sparit.sendGet(conn);
 				String patternOocd = "ereg_main_schi.jsp?[\\S]{0,200}\"";
 				Pattern r = Pattern.compile(patternOocd);
 				Matcher m = r.matcher(s);
@@ -57,7 +82,7 @@ public class SparitUrlDAO implements Runnable {
 	public List<String> getUrlList(){
 		return urls;
 	}
-	public static void removeURLBean(String url){
+	public void removeURLBean(String url){
 		synchronized(urls){
 			urls.remove(url);
 		}

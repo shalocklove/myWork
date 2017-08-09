@@ -1,4 +1,4 @@
-package com.dao;
+package com.dao2;
 
 import java.sql.SQLException;
 import java.sql.Statement;
