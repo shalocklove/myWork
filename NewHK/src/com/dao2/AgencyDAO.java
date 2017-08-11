@@ -18,13 +18,17 @@ public class AgencyDAO {
 	
 	public void run() throws IOException{
 		String result = "";
-		String url = "http://www.xicidaili.com/";
+		String url = "http://www.xicidaili.com";
 		Sparit sparit = new Sparit();
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(20, 20, 300,
 			       TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(10),
 			    new ThreadPoolExecutor.CallerRunsPolicy());
 		try {
-			result = sparit.sendGet(sparit.Connection(url));
+			System.out.println(url);
+			URLConnection conn = sparit.Connection(url);
+			conn.setRequestProperty("User-Agent", "Mozilla/31.0 (compatible; MSIE 10.0; Windows NT; DigExt)");  
+			result = sparit.sendGet(conn);
+//			System.out.println(result);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

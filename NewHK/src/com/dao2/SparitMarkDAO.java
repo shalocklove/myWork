@@ -24,30 +24,40 @@ public class SparitMarkDAO implements Runnable {
 	public static List<MarkBean> list = new ArrayList<MarkBean>();
 	private Proxy proxy;
 	private Agency agency;
-	
+	private HttpURLConnection httpUrlConnection;
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		URLConnection conn = null;
-//		InetSocketAddress addr = new InetSocketAddress("223.154.130.69", 80);  
-//        Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+		try {
+			Thread.sleep(20000);
+			if(agency.proxys.size() <= 3)
+				Thread.sleep(2000);
+		} catch (InterruptedException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		synchronized (agency.proxys) {
-			if(agency.proxys.size() <= 2)
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			proxy = agency.proxys.get(0);
+			proxy = (Proxy)agency.getProxs().get(1);
 			agency.proxys.remove(proxy);
 		}
 		try {
 			conn = sparit.Connection(url, proxy);
+			conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0");  
+		    conn.setRequestProperty("Host", "ipsearch.ipd.gov.hk");
+		    conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		    conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+		    conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+		    conn.setRequestProperty("Referer", url);
+//		    conn.setRequestProperty("Cookie", "USERID=GUEST; USER=TMLRUser; JSESSIONID=B7F4134322A647219A92D89E06466DBE");
+		    conn.setRequestProperty("Connection", "keep-alive");
+		    conn.setRequestProperty("Upgrade-Insecure-Requests", "1");
+//			conn = sparit.Connection(url, proxy);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		httpUrlConnection = (HttpURLConnection) conn;
 		String result = "";
 		try {
 			result = sparit.sendGet(conn);
@@ -93,9 +103,9 @@ public class SparitMarkDAO implements Runnable {
 			if(m.find()){
 				mmap.put(ma.getKey(), m.group());
 			}
-		}
-		mark.setMarkNO(mmap.get("markNO")+" ");
-		System.out.println("class : " + mmap.get("class"));
+		}System.out.println("MARK : " + mmap.get("markNO") + "   url:" + url);
+		mark.setMarkNO(mmap.get("markNO"));
+		
 		try{
 			mark.setClass(mmap.get("class"));
 		}catch(NumberFormatException e){

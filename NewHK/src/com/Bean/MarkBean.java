@@ -31,7 +31,7 @@ public class MarkBean {
 		return markNO;
 	}
 	public void setMarkNO(String markNO) {
-		this.markNO = markNO.substring(16, markNO.length()-2);
+		this.markNO = markNO.substring(16, markNO.length()-1);
 	}
 	public String getStatus() {
 		return status;

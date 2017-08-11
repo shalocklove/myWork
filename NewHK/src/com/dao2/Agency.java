@@ -33,6 +33,7 @@ public class Agency implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+			System.out.println("ip : " + ip + "  post : " + post);
 	        InetSocketAddress addr = new InetSocketAddress(ip, post);  
 	        Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
 	        try{

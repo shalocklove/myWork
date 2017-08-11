@@ -25,27 +25,33 @@ public class SparitUrlDAO implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		
 			try {
+				try {
+					Thread.sleep(20000);
+					if(agency.proxys.size() <= 3)
+						Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				String s = "";
 				System.out.println(url);
-				InetSocketAddress addr = new InetSocketAddress("203.189.169.87", 80);  
-		        Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
-//				synchronized (agency.proxys) {
-//					if(agency.proxys.size() <= 3){
-//						try {
-//							Thread.sleep(500);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//					}
-//					proxy = agency.proxys.get(0);
-//					agency.proxys.remove(proxy);
-//				}
-				System.out.println(proxy);
+				synchronized (agency.proxys) {
+					proxy = (Proxy)agency.getProxs().get(0);
+					agency.proxys.remove(proxy);
+				}
 			    conn = sparit.Connection(url, proxy);
-			    HttpURLConnection httpUrlConnection = (HttpURLConnection) conn;
-			    System.out.println(httpUrlConnection.getResponseCode());
+			    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0");  
+			    conn.setRequestProperty("Host", "ipsearch.ipd.gov.hk");
+			    conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+			    conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+			    conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+			    conn.setRequestProperty("Referer", url);
+//			    conn.setRequestProperty("Cookie", "USERID=GUEST; USER=TMLRUser; JSESSIONID=B7F4134322A647219A92D89E06466DBE");
+			    conn.setRequestProperty("Connection", "keep-alive");
+			    conn.setRequestProperty("Upgrade-Insecure-Requests", "1");
+//				conn = sparit.Connection(url, proxy);
 				
 				s = sparit.sendGet(conn);
 				String patternOocd = "ereg_main_schi.jsp?[\\S]{0,200}\"";
@@ -69,9 +75,6 @@ public class SparitUrlDAO implements Runnable {
 				e.printStackTrace();
 				System.out.println(url);
 			}
-			
-			
-		
 	}
 	public void setUrl(String url){
 		this.url = url;

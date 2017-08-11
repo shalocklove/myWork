@@ -21,12 +21,6 @@ public class NewDAO implements Runnable {
 		urls = sparitDao.getUrlList();
 		for (String string : urls) {
 			executor.execute(new SparitMarkDAO(string));
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		executor.shutdown();
 	}

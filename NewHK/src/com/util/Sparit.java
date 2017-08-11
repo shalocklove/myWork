@@ -46,7 +46,6 @@ public class Sparit {
 	}
 	public String sendGet(URLConnection conn) throws IOException{
 		StringBuffer result = new StringBuffer();
-	    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0");  
 		conn.connect();
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),setChar));
 		String line;
