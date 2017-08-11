@@ -22,47 +22,34 @@ public class d {
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String url = "http://www.xicidaili.com/";
+//		String url = "http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?SAVED_CRI=&FROM_SEARCH_RESULT=0&ITEM_KEY=830513920&FILE_NO=199200099&FILE_NO_TYPE=REG_TM&SOAPQC=0";
+//		String url = "http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?SAVED_CRI=&FROM_SEARCH_RESULT=0&ITEM_KEY=830517504&FILE_NO=199200117&FILE_NO_TYPE=REG_TM&SOAPQC=3";
+	    String url = "http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?SAVED_CRI=&FROM_SEARCH_RESULT=0&ITEM_KEY=830520064&FILE_NO=199200126&FILE_NO_TYPE=REG_TM&SOAPQC=7";
+//		String url = "http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?SAVED_CRI=&FROM_SEARCH_RESULT=0&ITEM_KEY=830517760&FILE_NO=199200118&FILE_NO_TYPE=REG_TM&SOAPQC=3";
+					
 		Sparit sparit = new Sparit();
-		String result = sparit.sendGet(sparit.Connection(url));
-//		System.out.println(result);
-		Pattern r = Pattern.compile("<td>[0-9]{0,3}\\.[0-9]{0,3}\\.[0-9]{0,3}\\.[0-9]{0,3}</td>[\\s]*<td>[0-9]{0,4}</td>");
-		Matcher m = r.matcher(result);
-		Matcher ip = null;
-		Matcher post = null;
-		while(m.find()){
-			r = Pattern.compile("[0-9]{0,3}\\.[0-9]{0,3}\\.[0-9]{0,3}\\.[0-9]{0,3}");
-			ip = r.matcher(m.group());
-			r = Pattern.compile("<td>[0-9]{0,4}</td>");
-			post = r.matcher(m.group());
-			if(ip.find() && post.find()){
-				System.out.println("ip : " + ip.group() + "  post : " + post.group().substring(4, post.group().length()-5));
-				try {
-			           String surl="http://ipsearch.ipd.gov.hk/trademark/jsp/ereg_schi.jsp?SAVED_CRI=&FROM_SEARCH_RESULT=0&ITEM_KEY=834240768&FILE_NO=1995B00031AA&FILE_NO_TYPE=REG_TM&SOAPQC=1";
-			           URL urls = new URL(surl);
-			           InetSocketAddress addr = new InetSocketAddress(ip.group(), Integer.parseInt(post.group().substring(4, post.group().length()-5)));  
-			           Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
-			           URLConnection rulConnection  = urls.openConnection(proxy);
-			           HttpURLConnection httpUrlConnection  =  (HttpURLConnection) rulConnection;
-			           httpUrlConnection.setConnectTimeout(300000);
-			           httpUrlConnection.setReadTimeout(300000);
-			           httpUrlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36");  
-			           httpUrlConnection.connect();
-			           String code = new Integer(httpUrlConnection.getResponseCode()).toString();
-			           String message = httpUrlConnection.getResponseMessage();
-			           System.out.println("getResponseCode code ="+ code);
-			           if(code.startsWith("2")){
-			        	   synchronized (Agency.proxys) {
-			        		   Agency.proxys.add(proxy);
-			        	   }
-			           }
-			               
-			          }catch(Exception ex){
-			               System.out.println(ex.getMessage());
-			          }
-			}
-		}
-		
+		URLConnection conn = sparit.Connection(url);
+		conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0");  
+	    conn.setRequestProperty("Host", "ipsearch.ipd.gov.hk");
+	    conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+	    conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3");
+	    conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+	    conn.setRequestProperty("Referer", url);
+//	    conn.setRequestProperty("Cookie", "USERID=GUEST; USER=TMLRUser; JSESSIONID=A31CEB1DEE21AD25A4ED1DF7921E4BB9");
+//	    conn.setRequestProperty("Cookie", "USERID=GUEST; USER=TMLRUser; JSESSIONID=90D08BA5FB49E8B08F0FC52D6632E4F2");
+	    conn.setRequestProperty("Cookie", "USERID=GUEST; USER=TMLRUser; JSESSIONID=33A1B9FE8F4FE95B7743A6CE3B13D7ED");
+	    conn.setRequestProperty("Connection", "keep-alive");
+	    conn.setRequestProperty("Upgrade-Insecure-Requests", "1");
+	    String result = sparit.sendGet(conn);
+	    System.out.println(result);
+	    Pattern r = Pattern.compile("<td width=\"460\">[\\S]{0,13}<");
+	    Matcher m = r.matcher(result);
+	    if(m.find()){
+	    	System.out.println("aaaa :  " + m.group());
+	    	System.out.println(m.group().substring(16, m.group().length()-2));
+	    }
+	    
+
 	}
 
 }

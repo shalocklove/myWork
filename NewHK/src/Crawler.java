@@ -19,18 +19,16 @@ public class Crawler {
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 15, 300,
 			       TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(10),
 			    new ThreadPoolExecutor.CallerRunsPolicy());
-//		new AgencyDAO().run();
-//		Thread.sleep(3000);
-		for(int i = 19920010; i <= 19920040; i += 10){
-//			Thread.sleep(3000);
-//			if(Agency.getProxs().size() <= 40){
-//				System.out.println("开始");
-//				new AgencyDAO().run();
-//				Thread.sleep(3000);
-//			}
-			urlSecend = MessageFormat.format(urlFirst, String.valueOf(i), String.valueOf(i + 9));
+		new AgencyDAO().run();
+		for(int i = 19920010; i <= 19921000; i += 20){
+			Thread.sleep(10000);
+			if(Agency.getProxs().size() <= 3){
+				System.out.println("开始");
+				new AgencyDAO().run();
+				Thread.sleep(3000);
+			}
+			urlSecend = MessageFormat.format(urlFirst, String.valueOf(i), String.valueOf(i + 19));
 			executor.execute(new NewDAO(urlSecend));
-			Thread.sleep(2000);
 		}
 		executor.shutdown();
 	}
