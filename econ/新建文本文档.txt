@@ -1,0 +1,55 @@
+https://www.economia.gov.mo/zh_CN/web/public/pg_es_ae_qe_trademark;jsessionid=4D80F798ECB623DECF8BE01E6CDEE3AD?p_p_id=MarcaQueryPortlet_WAR_MarcaQueryPortletportlet_INSTANCE_hYJ3XqEtu42l&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-1&p_p_col_count=1&_MarcaQueryPortlet_WAR_MarcaQueryPortletportlet_INSTANCE_hYJ3XqEtu42l__jsfBridgeAjax=true&_MarcaQueryPortlet_WAR_MarcaQueryPortletportlet_INSTANCE_hYJ3XqEtu42l__facesViewIdResource=/index.xhtml
+
+javax.faces.partial.ajax	true
+javax.faces.source	A9158:briefResultTable:0:detail_
+javax.faces.partial.execute	@all
+A9158:briefResultTable:0:detail_	A9158:briefResultTable:0:detail_
+A9158:marcaform	A9158:marcaform
+javax.faces.encodedURL	https://www.economia.gov.mo/zh¡­ViewIdResource=%2Findex.xhtml
+A9158:applicationCategory	
+A9158:j_idt39	
+A9158:j_idt46	
+A9158:j_idt48	
+A9158:trademarkStyle	M
+A9158:applicantChinese	
+A9158:applicantEnglish	
+A9158:productCategory	0
+A9158:inputViennaCode	
+A9158:viennaTree_selection	
+A9158:matchAll	on
+A9158:dsecaptchaText	
+javax.faces.ViewState	3200759322068015845:8636865621013277105
+
+\\javax.faces.partial.ajax	true
+\\javax.faces.source	A9158:briefResultTable:0:detail_
+\\javax.faces.partial.execute	@all
+\\A9158:briefResultTable:0:detail_	A9158:briefResultTable:0:detail_
+\\A9158:marcaform	A9158:marcaform
+javax.faces.encodedURL	https://www.economia.gov.mo/zh¡­ViewIdResource=%2Findex.xhtml
+\\A9158:applicationCategory	
+\\A9158:j_idt39	
+\\A9158:j_idt46	
+\\A9158:j_idt48	
+A9158:trademarkStyle	M
+A9158:applicantChinese	
+A9158:applicantEnglish	
+A9158:productCategory	0
+A9158:inputViennaCode	
+A9158:viennaTree_selection	
+A9158:matchAll	on
+A9158:dsecaptchaText	
+javax.faces.ViewState	701204067529709825:-8790703956066202489
+
+
+
+
+
+
+
+
+
+
+
+
+
+456789
